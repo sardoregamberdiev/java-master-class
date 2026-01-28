@@ -46,17 +46,7 @@ public class Main {
                 switch (number) {
 
                     case 1:
-                        if (carBookings.length == 1 && carBookings[0] == null) {
-                            for (Car car : cars) {
-                                System.out.println(car);
-                            }
-                        } else {
-                            for (Car car : cars) {
-                                if (Arrays.stream(carBookings).noneMatch(c -> c.getCar() == car)) {
-                                    System.out.println(car);
-                                }
-                            }
-                        }
+                        showAvailableCars(cars, carBookings);
                         System.out.println("➡️ select car reg number");
                         String regNumber = scanner.nextLine();
                         for (User user : users) {
@@ -106,17 +96,7 @@ public class Main {
                         break;
 
                     case 4:
-                        if (carBookings.length == 1 && carBookings[0] == null) {
-                            for (Car car : cars) {
-                                System.out.println(car);
-                            }
-                        } else {
-                            for (Car car : cars) {
-                                if (Arrays.stream(carBookings).noneMatch(c -> c.getCar() == car)) {
-                                    System.out.println(car);
-                                }
-                            }
-                        }
+                        showAvailableCars(cars, carBookings);
                         break;
 
                     case 5:
@@ -152,5 +132,19 @@ public class Main {
                 System.out.println("'" + input + "' is not a valid number!\n");
             }
         } while (isNotFinished);
+    }
+
+    private static void showAvailableCars(Car[] cars, CarBooking[] carBookings) {
+        if (carBookings.length == 1 && carBookings[0] == null) {
+            for (Car car : cars) {
+                System.out.println(car);
+            }
+        } else {
+            for (Car car : cars) {
+                if (Arrays.stream(carBookings).noneMatch(c -> c.getCar() == car)) {
+                    System.out.println(car);
+                }
+            }
+        }
     }
 }
