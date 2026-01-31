@@ -8,9 +8,9 @@ public class UserDao {
 
     static {
         users = new User[]{
-                new User(UUID.randomUUID().toString(), "James"),
-                new User(UUID.randomUUID().toString(), "Leyla"),
-                new User(UUID.randomUUID().toString(), "Brain")
+                new User(UUID.randomUUID(), "James"),
+                new User(UUID.randomUUID(), "Leyla"),
+                new User(UUID.randomUUID(), "Brain")
         };
     }
 
@@ -18,7 +18,7 @@ public class UserDao {
         return users;
     }
 
-    public User getUserById(String id) {
+    public User getUserById(UUID id) {
         for (User user : users) {
             if (Objects.equals(user.getId(), id)) {
                 return user;

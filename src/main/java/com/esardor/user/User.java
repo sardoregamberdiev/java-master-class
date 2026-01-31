@@ -1,24 +1,25 @@
 package com.esardor.user;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class User {
-    private String id;
+    private UUID id;
     private String name;
 
     public User() {
     }
 
-    public User(String id, String name) {
+    public User(UUID id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

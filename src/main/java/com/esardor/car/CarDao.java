@@ -7,7 +7,7 @@ public class CarDao {
 
     static {
         cars = new Car[]{
-                new Car("017", 89.00, CarBrand.TESLA, true),
+                new Car("017", 89.00, CarBrand.BYD, true),
                 new Car("777", 125.00, CarBrand.BYD, true),
                 new Car("001", 120.00, CarBrand.MERCEDES),
                 new Car("7001", 100.00, CarBrand.TOYOTA),

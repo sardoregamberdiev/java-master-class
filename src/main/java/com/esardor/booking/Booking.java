@@ -1,4 +1,4 @@
-package com.esardor.carBooking;
+package com.esardor.booking;
 
 import com.esardor.car.Car;
 import com.esardor.user.User;
@@ -6,32 +6,25 @@ import com.esardor.user.User;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class CarBooking {
-    private String bookingId;
+public class Booking {
+    private UUID bookingId;
     private User user;
     private Car car;
     private LocalDateTime bookingTime;
     private boolean isCancelled;
 
-    {
-        this.bookingId = UUID.randomUUID().toString();
-        this.bookingTime = LocalDateTime.now();
-        this.isCancelled = false;
-    }
-
-    public CarBooking() {
-    }
-
-    public CarBooking(User user, Car car) {
+    public Booking(UUID bookingId, User user, Car car, LocalDateTime bookingTime) {
+        this.bookingId = bookingId;
         this.user = user;
         this.car = car;
+        this.bookingTime = bookingTime;
     }
 
-    public String getBookingId() {
+    public UUID getBookingId() {
         return bookingId;
     }
 
-    public void setBookingId(String bookingId) {
+    public void setBookingId(UUID bookingId) {
         this.bookingId = bookingId;
     }
 
@@ -69,12 +62,12 @@ public class CarBooking {
 
     @Override
     public String toString() {
-        return "CarBooking{" +
+        return "Booking{" +
                 "bookingId=" + bookingId +
-                ", user=" + user + '\'' +
-                ", car=" + car + '\'' +
-                ", bookingTime=" + bookingTime + '\'' +
-                ", isCancelled=" + isCancelled + '\'' +
+                ", user='" + user +
+                ", car='" + car +
+                ", bookingTime=" + bookingTime +
+                ", isCancelled=" + isCancelled +
                 '}';
     }
 }
