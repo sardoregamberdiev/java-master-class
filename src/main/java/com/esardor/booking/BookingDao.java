@@ -30,19 +30,6 @@ public class BookingDao {
         bookings = newBookings;
     }
 
-    public Booking[] getCarBookings() {
-        return bookings;
-    }
-
-    public Booking getCarBookingByBookingId(UUID bookingId) {
-        for (Booking booking : bookings) {
-            if (Objects.equals(booking.getBookingId(), bookingId)) {
-                return booking;
-            }
-        }
-        return null;
-    }
-
     public Booking[] getCarBookingsByUserId(UUID userId) {
         int counted = 0;
         for (Booking booking : bookings) {

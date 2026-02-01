@@ -9,10 +9,6 @@ public class UserService {
         this.userDao = new UserDao();
     }
 
-    public User[] getUsers() {
-        return userDao.getUsers();
-    }
-
     public void showAllUser() {
         System.out.println("Available users:");
         User[] users = userDao.getUsers();

@@ -26,7 +26,6 @@ public class BookingService {
     }
 
     public void saveBookingCar(Scanner scanner) {
-
         carService.showAllAvailableCars();
 
         System.out.println("➡️ select car reg number");
@@ -62,10 +61,6 @@ public class BookingService {
         Booking booking = new Booking(bookingId, user, car, bookingTime);
         bookingDao.saveBooking(booking);
         return booking.getBookingId();
-    }
-
-    public Booking[] getCarBookingsByUserId(UUID userId) {
-        return bookingDao.getCarBookingsByUserId(userId);
     }
 
     public void getAllBookings() {

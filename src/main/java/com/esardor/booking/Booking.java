@@ -4,6 +4,7 @@ import com.esardor.car.Car;
 import com.esardor.user.User;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Booking {
@@ -58,6 +59,19 @@ public class Booking {
 
     public void setCancelled(boolean cancelled) {
         isCancelled = cancelled;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Booking booking = (Booking) o;
+        return isCancelled == booking.isCancelled && Objects.equals(bookingId, booking.bookingId) && Objects.equals(user, booking.user) && Objects.equals(car, booking.car) && Objects.equals(bookingTime, booking.bookingTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(bookingId, user, car, bookingTime, isCancelled);
     }
 
     @Override
