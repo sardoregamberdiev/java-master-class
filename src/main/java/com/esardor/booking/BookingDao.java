@@ -12,7 +12,7 @@ public class BookingDao {
         bookings = new Booking[CAPACITY];
     }
 
-    public Booking[] getAllBooking() {
+    public Booking[] getAllBookedCars() {
         return bookings[0] != null ? bookings : null;
     }
 
@@ -31,6 +31,11 @@ public class BookingDao {
     }
 
     public Booking[] getCarBookingsByUserId(UUID userId) {
+        /**
+         * Doing this logic inside DAO, is it correct way or not?
+         * should it be done inside Service?
+         * DAO means DataBase, right?
+         * */
         int counted = 0;
         for (Booking booking : bookings) {
             if (booking != null && booking.getUser().getId().equals(userId)) {

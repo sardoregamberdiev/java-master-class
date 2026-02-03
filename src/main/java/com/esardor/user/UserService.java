@@ -9,12 +9,8 @@ public class UserService {
         this.userDao = new UserDao();
     }
 
-    public void showAllUser() {
-        System.out.println("Available users:");
-        User[] users = userDao.getUsers();
-        for (User user : users) {
-            System.out.println(user.toString());
-        }
+    public User[] showAllUser() {
+        return userDao.getUsers();
     }
 
     public User getUserById(UUID id) {

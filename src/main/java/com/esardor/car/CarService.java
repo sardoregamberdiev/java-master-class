@@ -5,24 +5,36 @@ import com.esardor.booking.BookingDao;
 
 public class CarService {
     private final CarDao carDao;
+    /***
+     * when I used BookingService here, it caused a circular dependency problem! This is causing a StackOverflowError
+     * that's why I used BookingDao to avoid this porblem
+     */
+//    private final BookingService bookingService;
     private final BookingDao bookingDao;
 
     public CarService() {
         this.carDao = new CarDao();
+        /***
+         * I used BookingService instead of BookingDao.
+         */
         this.bookingDao = new BookingDao();
     }
 
-    public Car getCarByRegNumber(String regNumber) {
+    public Car getCarByRegNumber1(String regNumber) {
         return carDao.getCarById(regNumber);
     }
 
-    public void showAllAvailableCars() {
+    public boolean getCarByRegNumber2(String regNumber) {
+        return carDao.getCarByRegNumber(regNumber);
+    }
+
+    public Car[] showAllAvailableCars() {
         Car[] cars = carDao.getCars();
-        Booking[] bookings = bookingDao.getAllBooking();
+        Booking[] bookings = bookingDao.getAllBookedCars();
+        Car[] result = new Car[cars.length];
+        var nextItem = 0;
         if (bookings == null) {
-            for (Car car : cars) {
-                System.out.println(car);
-            }
+            return cars;
         } else {
             var founded = false;
             for (Car car : cars) {
@@ -33,21 +45,24 @@ public class CarService {
                     }
                 }
                 if (!founded) {
-                    System.out.println(car);
+                    result[nextItem++] = car;
                 } else {
                     founded = false;
                 }
             }
         }
+        return result;
     }
 
-    public void showAllAvailableElectricCars() {
+    public Car[] showAllAvailableElectricCars() {
         Car[] cars = carDao.getCars();
-        Booking[] bookings = bookingDao.getAllBooking();
+        Booking[] bookings = bookingDao.getAllBookedCars();
+        Car[] result = new Car[cars.length];
+        var nextItem = 0;
         if (bookings == null) {
             for (Car car : cars) {
                 if (car.isElectric()) {
-                    System.out.println(car);
+                    result[nextItem++] = car;
                 }
             }
         } else {
@@ -61,12 +76,13 @@ public class CarService {
                         }
                     }
                     if (!founded) {
-                        System.out.println(car);
+                        result[nextItem++] = car;
                     } else {
                         founded = false;
                     }
                 }
             }
         }
+        return result;
     }
 }
