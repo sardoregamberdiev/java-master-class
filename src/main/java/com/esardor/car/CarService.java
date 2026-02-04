@@ -3,58 +3,86 @@ package com.esardor.car;
 import com.esardor.booking.Booking;
 import com.esardor.booking.BookingDao;
 
-import java.util.Arrays;
-
 public class CarService {
     private final CarDao carDao;
+    /***
+     * when I used BookingService here, it caused a circular dependency problem! This is causing a StackOverflowError
+     * that's why I used BookingDao to avoid this porblem
+     */
+//    private final BookingService bookingService;
     private final BookingDao bookingDao;
 
     public CarService() {
         this.carDao = new CarDao();
+        /***
+         * I used BookingService instead of BookingDao.
+         */
         this.bookingDao = new BookingDao();
     }
 
-    public Car[] getCars() {
-        return carDao.getCars();
-    }
-
-    public Car getCarByRegNumber(String regNumber) {
+    public Car getCarByRegNumber1(String regNumber) {
         return carDao.getCarById(regNumber);
     }
 
-    public void showAllAvailableCars() {
-        System.out.println("All available cars:");
+    public boolean getCarByRegNumber2(String regNumber) {
+        return carDao.getCarByRegNumber(regNumber);
+    }
+
+    public Car[] showAllAvailableCars() {
         Car[] cars = carDao.getCars();
-        Booking[] bookings = bookingDao.getAllBooking();
+        Booking[] bookings = bookingDao.getAllBookedCars();
+        Car[] result = new Car[cars.length];
+        var nextItem = 0;
         if (bookings == null) {
-            for (Car car : cars) {
-                System.out.println(car);
-            }
+            return cars;
         } else {
+            var founded = false;
             for (Car car : cars) {
-                if (Arrays.stream(bookings).noneMatch(c -> c != null && c.getCar() == car)) {
-                    System.out.println(car);
+                for (Booking booking : bookings) {
+                    if (booking != null && booking.getCar() == car) {
+                        founded = true;
+                        break;
+                    }
+                }
+                if (!founded) {
+                    result[nextItem++] = car;
+                } else {
+                    founded = false;
                 }
             }
         }
+        return result;
     }
 
-    public void showAllAvailableElectricCars() {
-        System.out.println("All available electric cars:");
+    public Car[] showAllAvailableElectricCars() {
         Car[] cars = carDao.getCars();
-        Booking[] bookings = bookingDao.getAllBooking();
+        Booking[] bookings = bookingDao.getAllBookedCars();
+        Car[] result = new Car[cars.length];
+        var nextItem = 0;
         if (bookings == null) {
             for (Car car : cars) {
                 if (car.isElectric()) {
-                    System.out.println(car);
+                    result[nextItem++] = car;
                 }
             }
         } else {
+            var founded = false;
             for (Car car : cars) {
-                if (car.isElectric() && Arrays.stream(bookings).noneMatch(c -> c != null && c.getCar() == car)) {
-                    System.out.println(car);
+                if (car.isElectric()) {
+                    for (Booking booking : bookings) {
+                        if (booking != null && booking.getCar() == car) {
+                            founded = true;
+                            break;
+                        }
+                    }
+                    if (!founded) {
+                        result[nextItem++] = car;
+                    } else {
+                        founded = false;
+                    }
                 }
             }
         }
+        return result;
     }
 }

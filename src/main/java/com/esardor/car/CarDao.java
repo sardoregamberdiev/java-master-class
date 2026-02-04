@@ -27,4 +27,13 @@ public class CarDao {
         }
         return null;
     }
+
+    public boolean getCarByRegNumber(String regNumber) {
+        for (Car car : cars) {
+            if (Objects.equals(car.getRegNumber(), regNumber)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
