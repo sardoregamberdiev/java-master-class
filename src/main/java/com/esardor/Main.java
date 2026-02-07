@@ -134,6 +134,7 @@ public class Main {
         var availableCars = carBookingService.getAvailableCars();
         if (availableCars.length == 0) {
             System.err.println("Not available cars. All booked");
+            return;
         }
 
         for (Car car : availableCars) {
