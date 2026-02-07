@@ -1,6 +1,6 @@
 package com.esardor.car;
 
-public enum CarBrand {
+public enum Brand {
     AUDI,
     MERCEDES,
     TOYOTA,
