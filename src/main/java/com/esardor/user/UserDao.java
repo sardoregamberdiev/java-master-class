@@ -1,6 +1,5 @@
 package com.esardor.user;
 
-import java.util.Objects;
 import java.util.UUID;
 
 public class UserDao {
@@ -16,14 +15,5 @@ public class UserDao {
 
     public User[] getUsers() {
         return users;
-    }
-
-    public User getUserById(UUID id) {
-        for (User user : users) {
-            if (Objects.equals(user.getId(), id)) {
-                return user;
-            }
-        }
-        return null;
     }
 }
