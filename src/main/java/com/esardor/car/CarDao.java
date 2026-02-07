@@ -1,39 +1,21 @@
 package com.esardor.car;
 
-import java.util.Objects;
+import java.math.BigDecimal;
 
 public class CarDao {
     private static final Car[] cars;
 
     static {
         cars = new Car[]{
-                new Car("017", 89.00, CarBrand.BYD, true),
-                new Car("777", 125.00, CarBrand.BYD, true),
-                new Car("001", 120.00, CarBrand.MERCEDES),
-                new Car("7001", 100.00, CarBrand.TOYOTA),
-                new Car("1000", 55.00, CarBrand.AUDI),
+                new Car("017", new BigDecimal("89.00"), Brand.BYD, true),
+                new Car("777", new BigDecimal("125.00"), Brand.BYD, true),
+                new Car("001", new BigDecimal("120.00"), Brand.MERCEDES),
+                new Car("7001", new BigDecimal("100.00"), Brand.TOYOTA),
+                new Car("1000", new BigDecimal("55.00"), Brand.AUDI)
         };
     }
 
     public Car[] getCars() {
         return cars;
-    }
-
-    public Car getCarById(String regNumber) {
-        for (Car car : cars) {
-            if (Objects.equals(car.getRegNumber(), regNumber)) {
-                return car;
-            }
-        }
-        return null;
-    }
-
-    public boolean getCarByRegNumber(String regNumber) {
-        for (Car car : cars) {
-            if (Objects.equals(car.getRegNumber(), regNumber)) {
-                return true;
-            }
-        }
-        return false;
     }
 }

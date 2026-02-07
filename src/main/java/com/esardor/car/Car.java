@@ -1,20 +1,21 @@
 package com.esardor.car;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Car {
     private String regNumber;
-    private double rentalPricePerDay;
-    private CarBrand brand;
+    private BigDecimal rentalPricePerDay;
+    private Brand brand;
     private boolean isElectric;
 
-    public Car(String regNumber, double rentalPricePerDay, CarBrand brand) {
+    public Car(String regNumber, BigDecimal rentalPricePerDay, Brand brand) {
         this.regNumber = regNumber;
         this.rentalPricePerDay = rentalPricePerDay;
         this.brand = brand;
     }
 
-    public Car(String regNumber, double rentalPricePerDay, CarBrand brand, boolean isElectric) {
+    public Car(String regNumber, BigDecimal rentalPricePerDay, Brand brand, boolean isElectric) {
         this(regNumber, rentalPricePerDay, brand);
         this.isElectric = isElectric;
     }
@@ -27,19 +28,19 @@ public class Car {
         this.regNumber = regNumber;
     }
 
-    public double getRentalPricePerDay() {
+    public BigDecimal getRentalPricePerDay() {
         return rentalPricePerDay;
     }
 
-    public void setRentalPricePerDay(double rentalPricePerDay) {
+    public void setRentalPricePerDay(BigDecimal rentalPricePerDay) {
         this.rentalPricePerDay = rentalPricePerDay;
     }
 
-    public CarBrand getBrand() {
+    public Brand getBrand() {
         return brand;
     }
 
-    public void setBrand(CarBrand brand) {
+    public void setBrand(Brand brand) {
         this.brand = brand;
     }
 
@@ -56,7 +57,7 @@ public class Car {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Car car = (Car) o;
-        return Double.compare(rentalPricePerDay, car.rentalPricePerDay) == 0 && isElectric == car.isElectric && Objects.equals(regNumber, car.regNumber) && brand == car.brand;
+        return isElectric == car.isElectric && Objects.equals(regNumber, car.regNumber) && Objects.equals(rentalPricePerDay, car.rentalPricePerDay) && brand == car.brand;
     }
 
     @Override
@@ -67,7 +68,7 @@ public class Car {
     @Override
     public String toString() {
         return "Car{" +
-                "regNumber='" + regNumber + "'" +
+                "regNumber='" + regNumber + '\'' +
                 ", rentalPricePerDay=" + rentalPricePerDay +
                 ", brand=" + brand +
                 ", isElectric=" + isElectric +
