@@ -1,9 +1,12 @@
 package com.esardor.car;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Car {
+public class Car implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String regNumber;
     private BigDecimal rentalPricePerDay;
     private Brand brand;

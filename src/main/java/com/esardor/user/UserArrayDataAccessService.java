@@ -39,6 +39,17 @@ public class UserArrayDataAccessService implements UserDao {
         return users;
     }
 
+    @Override
+    public User getUserById(UUID id) {
+        User[] users = getUsers();
+        for (User user : users) {
+            if (user.getId().equals(id)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
     private User parseLine(String line) {
         String[] parts = line.split(",");
         UUID id = UUID.fromString(parts[0].trim());

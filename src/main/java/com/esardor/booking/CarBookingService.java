@@ -8,12 +8,15 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class CarBookingService {
-    private final CarBookingDao carBookingDao;
+    private final CarBookingArrayDataAccessService carBookingArrayDataAccessService;
     private final CarService carService;
 
-    public CarBookingService() {
-        this.carBookingDao = new CarBookingDao();
-        this.carService = new CarService();
+    public CarBookingService(
+            CarBookingArrayDataAccessService carBookingArrayDataAccessService,
+            CarService carService
+    ) {
+        this.carBookingArrayDataAccessService = carBookingArrayDataAccessService;
+        this.carService = carService;
     }
 
     public UUID bookingCar(User user, String regNumber) {
@@ -27,7 +30,7 @@ public class CarBookingService {
             if (availableCar.getRegNumber().equals(regNumber)) {
                 Car car = carService.getCarByRegNumber(regNumber);
                 UUID bookingId = UUID.randomUUID();
-                carBookingDao.saveBooking(new CarBooking(bookingId, user, car, LocalDateTime.now()));
+                carBookingArrayDataAccessService.saveBooking(new CarBooking(bookingId, user, car, LocalDateTime.now()));
                 return bookingId;
             }
         }
@@ -37,7 +40,7 @@ public class CarBookingService {
 
     public CarBooking[] getCarBookings() {
         int count = 0;
-        CarBooking[] carBookings = carBookingDao.getCarBookings();
+        CarBooking[] carBookings = carBookingArrayDataAccessService.getCarBookings();
         for (CarBooking carBooking : carBookings) {
             if (carBooking != null) {
                 count++;
@@ -57,7 +60,7 @@ public class CarBookingService {
     }
 
     public CarBooking[] getCarBookingsByUser(UUID userId) {
-        CarBooking[] carBookings = carBookingDao.getCarBookings();
+        CarBooking[] carBookings = carBookingArrayDataAccessService.getCarBookings();
         int count = 0;
         for (CarBooking carBooking : carBookings) {
             if (carBooking != null && carBooking.getUser().getId().equals(userId)) {
@@ -92,7 +95,7 @@ public class CarBookingService {
             return new Car[0];
         }
 
-        CarBooking[] bookedCars = carBookingDao.getCarBookings();
+        CarBooking[] bookedCars = carBookingArrayDataAccessService.getCarBookings();
         if (bookedCars.length == 0) {
             return cars;
         }

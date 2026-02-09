@@ -5,8 +5,8 @@ import java.util.UUID;
 public class UserService {
     private final UserArrayDataAccessService userArrayDataAccessService;
 
-    public UserService() {
-        this.userArrayDataAccessService = new UserArrayDataAccessService();
+    public UserService(UserArrayDataAccessService userArrayDataAccessService) {
+        this.userArrayDataAccessService = userArrayDataAccessService;
     }
 
     public User[] getUsers() {
@@ -14,11 +14,6 @@ public class UserService {
     }
 
     public User getUserById(UUID id) {
-        for (User user : getUsers()) {
-            if (user.getId().equals(id)) {
-                return user;
-            }
-        }
-        throw new IllegalStateException(String.format("User with id %s not found", id));
+        return userArrayDataAccessService.getUserById(id);
     }
 }

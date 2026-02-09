@@ -1,9 +1,13 @@
 package com.esardor;
 
 import com.esardor.booking.CarBooking;
+import com.esardor.booking.CarBookingArrayDataAccessService;
 import com.esardor.booking.CarBookingService;
 import com.esardor.car.Car;
+import com.esardor.car.CarArrayDataAccessService;
+import com.esardor.car.CarService;
 import com.esardor.user.User;
+import com.esardor.user.UserArrayDataAccessService;
 import com.esardor.user.UserService;
 
 import java.util.Scanner;
@@ -11,8 +15,15 @@ import java.util.UUID;
 
 public class Main {
     public static void main(String[] args) {
-        UserService userService = new UserService();
-        CarBookingService carBookingService = new CarBookingService();
+        // dependencies
+        UserArrayDataAccessService userArrayDataAccessService = new UserArrayDataAccessService();
+        CarBookingArrayDataAccessService carBookingArrayDataAccessService = new CarBookingArrayDataAccessService();
+        CarArrayDataAccessService carArrayDataAccessService = new CarArrayDataAccessService();
+        CarService carService = new CarService(carArrayDataAccessService);
+
+        //inject
+        UserService userService = new UserService(userArrayDataAccessService);
+        CarBookingService carBookingService = new CarBookingService(carBookingArrayDataAccessService, carService);
 
         boolean isNotFinished = true;
 
@@ -105,6 +116,10 @@ public class Main {
         String userId = scanner.nextLine();
 
         User user = userService.getUserById(UUID.fromString(userId));
+        if (user == null) {
+            System.out.printf("User with id %s not found%n", userId);
+            return;
+        }
 
         try {
             CarBooking[] bookingsByUser = carBookingService.getCarBookingsByUser(user.getId());
@@ -151,6 +166,11 @@ public class Main {
 
         try {
             User user = userService.getUserById(UUID.fromString(userId));
+            if (user == null) {
+                System.out.printf("User with id %s not found%n", userId);
+                return;
+            }
+
             UUID bookingId = carBookingService.bookingCar(user, regNumber);
 
             String formattedMessage = """

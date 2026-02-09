@@ -3,11 +3,14 @@ package com.esardor.booking;
 import com.esardor.car.Car;
 import com.esardor.user.User;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
-public class CarBooking {
+public class CarBooking implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private UUID bookingId;
     private User user;
     private Car car;
