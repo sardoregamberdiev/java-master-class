@@ -2,12 +2,15 @@ package com.esardor;
 
 import com.esardor.booking.CarBooking;
 import com.esardor.booking.CarBookingArrayDataAccessService;
+import com.esardor.booking.CarBookingDao;
 import com.esardor.booking.CarBookingService;
 import com.esardor.car.Car;
 import com.esardor.car.CarArrayDataAccessService;
+import com.esardor.car.CarDao;
 import com.esardor.car.CarService;
 import com.esardor.user.User;
-import com.esardor.user.UserArrayDataAccessService;
+import com.esardor.user.UserDao;
+import com.esardor.user.UserFileDataAccessService;
 import com.esardor.user.UserService;
 
 import java.util.Scanner;
@@ -16,14 +19,14 @@ import java.util.UUID;
 public class Main {
     public static void main(String[] args) {
         // dependencies
-        UserArrayDataAccessService userArrayDataAccessService = new UserArrayDataAccessService();
-        CarBookingArrayDataAccessService carBookingArrayDataAccessService = new CarBookingArrayDataAccessService();
-        CarArrayDataAccessService carArrayDataAccessService = new CarArrayDataAccessService();
-        CarService carService = new CarService(carArrayDataAccessService);
+        UserDao userDao = new UserFileDataAccessService();
+        CarBookingDao carBookingDao = new CarBookingArrayDataAccessService();
+        CarDao carDao = new CarArrayDataAccessService();
+        CarService carService = new CarService(carDao);
 
         //inject
-        UserService userService = new UserService(userArrayDataAccessService);
-        CarBookingService carBookingService = new CarBookingService(carBookingArrayDataAccessService, carService);
+        UserService userService = new UserService(userDao);
+        CarBookingService carBookingService = new CarBookingService(carBookingDao, carService);
 
         boolean isNotFinished = true;
 

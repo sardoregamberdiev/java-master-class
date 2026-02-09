@@ -3,17 +3,17 @@ package com.esardor.user;
 import java.util.UUID;
 
 public class UserService {
-    private final UserArrayDataAccessService userArrayDataAccessService;
+    private final UserDao userDao;
 
-    public UserService(UserArrayDataAccessService userArrayDataAccessService) {
-        this.userArrayDataAccessService = userArrayDataAccessService;
+    public UserService(UserDao userDao) {
+        this.userDao = userDao;
     }
 
     public User[] getUsers() {
-        return userArrayDataAccessService.getUsers();
+        return userDao.getUsers();
     }
 
     public User getUserById(UUID id) {
-        return userArrayDataAccessService.getUserById(id);
+        return userDao.getUserById(id);
     }
 }

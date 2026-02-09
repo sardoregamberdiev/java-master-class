@@ -1,18 +1,18 @@
 package com.esardor.car;
 
 public class CarService {
-    private final CarArrayDataAccessService carArrayDataAccessService;
+    private final CarDao carDao;
 
-    public CarService(CarArrayDataAccessService carArrayDataAccessService) {
-        this.carArrayDataAccessService = carArrayDataAccessService;
+    public CarService(CarDao carDao) {
+        this.carDao = carDao;
     }
 
     public Car[] getCars() {
-        return carArrayDataAccessService.getCars();
+        return carDao.getCars();
     }
 
     public Car[] getElectricCar() {
-        Car[] cars = carArrayDataAccessService.getCars();
+        Car[] cars = carDao.getCars();
         int count = 0;
         for (Car car : cars) {
             if (car.isElectric()) {
