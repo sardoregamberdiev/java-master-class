@@ -3,17 +3,22 @@ package com.esardor.user;
 import java.util.UUID;
 
 public class UserService {
-    private final UserDao userDao;
+    private final UserArrayDataAccessService userArrayDataAccessService;
 
     public UserService() {
-        this.userDao = new UserDao();
+        this.userArrayDataAccessService = new UserArrayDataAccessService();
     }
 
-    public User[] showAllUser() {
-        return userDao.getUsers();
+    public User[] getUsers() {
+        return userArrayDataAccessService.getUsers();
     }
 
     public User getUserById(UUID id) {
-        return userDao.getUserById(id);
+        for (User user : getUsers()) {
+            if (user.getId().equals(id)) {
+                return user;
+            }
+        }
+        throw new IllegalStateException(String.format("User with id %s not found", id));
     }
 }
