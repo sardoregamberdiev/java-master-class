@@ -16,7 +16,7 @@ public class UserArrayDataAccessService implements UserDao {
 
     @Override
     public User[] getUsers() {
-        return new User[0];
+        return users;
     }
 
     @Override
