@@ -11,9 +11,12 @@ public class CarBookingService {
     private final CarBookingDao carBookingDao;
     private final CarService carService;
 
-    public CarBookingService() {
-        this.carBookingDao = new CarBookingDao();
-        this.carService = new CarService();
+    public CarBookingService(
+            CarBookingDao carBookingDao,
+            CarService carService
+    ) {
+        this.carBookingDao = carBookingDao;
+        this.carService = carService;
     }
 
     public UUID bookingCar(User user, String regNumber) {

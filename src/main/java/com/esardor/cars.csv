@@ -1,0 +1,6 @@
+regNumber   rentalPricePerDay   brand       isElectric
+017,        89.00,              BYD,        true
+777,        125.00,             BYD,        true
+001,        120.00,             MERCEDES,   false
+7001,       100.00,             TOYOTA,     false
+1000,       55.00,              AUDI,       false
