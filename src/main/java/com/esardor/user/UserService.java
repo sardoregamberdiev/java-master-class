@@ -1,19 +1,20 @@
 package com.esardor.user;
 
+import java.util.List;
 import java.util.UUID;
 
 public class UserService {
-    private final UserDao userDao;
+    private final UserListDao userListDao;
 
-    public UserService(UserDao userDao) {
-        this.userDao = userDao;
+    public UserService(UserListDao userListDao) {
+        this.userListDao = userListDao;
     }
 
-    public User[] getUsers() {
-        return userDao.getUsers();
+    public List<User> getUsers() {
+        return userListDao.getUsers();
     }
 
     public User getUserById(UUID id) {
-        return userDao.getUserById(id);
+        return userListDao.getUserById(id);
     }
 }

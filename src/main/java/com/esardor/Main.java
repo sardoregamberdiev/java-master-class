@@ -1,32 +1,33 @@
 package com.esardor;
 
 import com.esardor.booking.CarBooking;
-import com.esardor.booking.CarBookingArrayDataAccessService;
-import com.esardor.booking.CarBookingDao;
+import com.esardor.booking.CarBookingListDao;
+import com.esardor.booking.CarBookingListDataAccessService;
 import com.esardor.booking.CarBookingService;
 import com.esardor.car.Car;
-import com.esardor.car.CarArrayDataAccessService;
-import com.esardor.car.CarDao;
+import com.esardor.car.CarListDao;
+import com.esardor.car.CarListDataAccessService;
 import com.esardor.car.CarService;
 import com.esardor.user.User;
-import com.esardor.user.UserDao;
-import com.esardor.user.UserFileDataAccessService;
+import com.esardor.user.UserListDao;
+import com.esardor.user.UserListDataAccessService;
 import com.esardor.user.UserService;
 
+import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
 
 public class Main {
     public static void main(String[] args) {
         // dependencies
-        UserDao userDao = new UserFileDataAccessService();
-        CarBookingDao carBookingDao = new CarBookingArrayDataAccessService();
-        CarDao carDao = new CarArrayDataAccessService();
-        CarService carService = new CarService(carDao);
+        UserListDao userListDao = new UserListDataAccessService();
+        CarBookingListDao carBookingArrayDao = new CarBookingListDataAccessService();
+        CarListDao carListDao = new CarListDataAccessService();
+        CarService carService = new CarService(carListDao);
 
         //inject
-        UserService userService = new UserService(userDao);
-        CarBookingService carBookingService = new CarBookingService(carBookingDao, carService);
+        UserService userService = new UserService(userListDao);
+        CarBookingService carBookingService = new CarBookingService(carBookingArrayDao, carService);
 
         boolean isNotFinished = true;
 
@@ -83,8 +84,8 @@ public class Main {
     }
 
     private static void displayUsers(UserService userService) {
-        User[] users = userService.getUsers();
-        if (users.length == 0) {
+        List<User> users = userService.getUsers();
+        if (users.isEmpty()) {
             System.err.println("No users saved in the systems");
             return;
         }
@@ -95,14 +96,14 @@ public class Main {
     }
 
     private static void displayAvailableCars(CarBookingService carBookingService, boolean isElectric) {
-        Car[] availableCars;
+        List<Car> availableCars;
         if (isElectric) {
             availableCars = carBookingService.getAvailableElectricCars();
         } else {
             availableCars = carBookingService.getAvailableCars();
         }
 
-        if (availableCars.length == 0) {
+        if (availableCars.isEmpty()) {
             System.err.printf("No available %s cars now!%n", isElectric ? "electric" : "");
         }
 
@@ -125,8 +126,8 @@ public class Main {
         }
 
         try {
-            CarBooking[] bookingsByUser = carBookingService.getCarBookingsByUser(user.getId());
-            if (bookingsByUser.length == 0) {
+            List<CarBooking> bookingsByUser = carBookingService.getCarBookingsByUser(user.getId());
+            if (bookingsByUser.isEmpty()) {
                 System.err.println("❌ user " + user + " has no cars booked");
                 return;
             }
@@ -139,8 +140,8 @@ public class Main {
     }
 
     private static void displayAllBookings(CarBookingService carBookingService) {
-        CarBooking[] bookedCars = carBookingService.getCarBookings();
-        if (bookedCars.length == 0) {
+        List<CarBooking> bookedCars = carBookingService.getCarBookings();
+        if (bookedCars.isEmpty()) {
             System.err.println("Not booked cars yet!");
         }
         for (CarBooking bookedCar : bookedCars) {
@@ -150,7 +151,7 @@ public class Main {
 
     private static void bookCar(Scanner scanner, UserService userService, CarBookingService carBookingService) {
         var availableCars = carBookingService.getAvailableCars();
-        if (availableCars.length == 0) {
+        if (availableCars.isEmpty()) {
             System.err.println("Not available cars. All booked");
             return;
         }

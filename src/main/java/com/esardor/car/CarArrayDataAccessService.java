@@ -2,7 +2,7 @@ package com.esardor.car;
 
 import java.math.BigDecimal;
 
-public class CarArrayDataAccessService implements CarDao {
+public class CarArrayDataAccessService implements CarArrayDao {
     private static final Car[] cars;
 
     static {

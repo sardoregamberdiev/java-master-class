@@ -1,5 +1,5 @@
 package com.esardor.car;
 
-public interface CarDao {
+public interface CarArrayDao {
     Car[] getCars();
 }

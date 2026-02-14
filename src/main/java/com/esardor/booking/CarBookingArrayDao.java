@@ -1,6 +1,6 @@
 package com.esardor.booking;
 
-public interface CarBookingDao {
+public interface CarBookingArrayDao {
     CarBooking[] getCarBookings();
 
     void saveBooking(CarBooking carBooking);
