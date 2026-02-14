@@ -1,36 +1,26 @@
 package com.esardor.car;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CarService {
-    private final CarDao carDao;
+    private final CarListDao carListDao;
 
-    public CarService(CarDao carDao) {
-        this.carDao = carDao;
+    public CarService(CarListDao carListDao) {
+        this.carListDao = carListDao;
     }
 
-    public Car[] getCars() {
-        return carDao.getCars();
+    public List<Car> getCars() {
+        return carListDao.getCars();
     }
 
-    public Car[] getElectricCar() {
-        Car[] cars = carDao.getCars();
-        int count = 0;
-        for (Car car : cars) {
+    public List<Car> getElectricCar() {
+        List<Car> electricCars = new ArrayList<>();
+        for (Car car : carListDao.getCars()) {
             if (car.isElectric()) {
-                count++;
+                electricCars.add(car);
             }
         }
-        if (count == 0) {
-            return new Car[0];
-        }
-
-        Car[] electricCars = new Car[count];
-        int nextItem = 0;
-        for (Car car : cars) {
-            if (car.isElectric()) {
-                electricCars[nextItem++] = car;
-            }
-        }
-
         return electricCars;
     }
 

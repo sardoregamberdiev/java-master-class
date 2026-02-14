@@ -2,7 +2,7 @@ package com.esardor.booking;
 
 import java.io.*;
 
-public class CarBookingFileDataAccessService implements CarBookingDao {
+public class CarBookingFileArrayDataAccessService implements CarBookingArrayDao {
     private static final String FILE_URL = "src/main/java/com/esardor/bookings.ser";
     private static CarBooking[] carBookings;
 
@@ -60,7 +60,6 @@ public class CarBookingFileDataAccessService implements CarBookingDao {
         return result;
     }
 
-    // Save one booking to a file
     @Override
     public void saveBooking(CarBooking carBooking) {
         File file = new File(FILE_URL);
@@ -84,11 +83,9 @@ public class CarBookingFileDataAccessService implements CarBookingDao {
             System.out.println("Booking saved: " + carBooking.getBookingId());
         } catch (IOException e) {
             System.err.println("Error saving booking: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
-    // Custom class to handle appending without writing header again
     private static class AppendableObjectOutputStream extends ObjectOutputStream {
         public AppendableObjectOutputStream(OutputStream out) throws IOException {
             super(out);

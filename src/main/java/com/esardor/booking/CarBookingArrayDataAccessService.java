@@ -1,6 +1,6 @@
 package com.esardor.booking;
 
-public class CarBookingArrayDataAccessService implements CarBookingDao {
+public class CarBookingArrayDataAccessService implements CarBookingArrayDao {
     private static CarBooking[] carBookings;
 
     static {

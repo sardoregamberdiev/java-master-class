@@ -3,7 +3,7 @@ package com.esardor.user;
 import java.util.Objects;
 import java.util.UUID;
 
-public class UserArrayDataAccessService implements UserDao {
+public class UserArrayDataAccessService implements UserArrayDao {
     private static final User[] users;
 
     static {

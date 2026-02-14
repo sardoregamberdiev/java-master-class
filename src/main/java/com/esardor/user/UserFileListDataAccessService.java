@@ -4,9 +4,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-public class UserFileDataAccessService implements UserDao {
+public class UserFileListDataAccessService implements UserListDao {
     private static final String URL = "src/main/java/com/esardor/users.csv";
     private static final String CONTENT = """
             id					                    name
@@ -16,8 +18,8 @@ public class UserFileDataAccessService implements UserDao {
             """;
 
     @Override
-    public User[] getUsers() {
-        User[] users = new User[3];
+    public List<User> getUsers() {
+        List<User> users = new ArrayList<>();
         try (
                 FileWriter fileWriter = new FileWriter(URL);
                 FileReader fileReader = new FileReader(URL);
@@ -26,12 +28,12 @@ public class UserFileDataAccessService implements UserDao {
             fileWriter.write(CONTENT);
             fileWriter.flush();
 
-            String header = bufferedReader.readLine();
+            bufferedReader.readLine();
+
             String line;
-            int index = 0;
             while ((line = bufferedReader.readLine()) != null) {
                 User user = parseLine(line);
-                users[index++] = user;
+                users.add(user);
             }
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
@@ -41,7 +43,7 @@ public class UserFileDataAccessService implements UserDao {
 
     @Override
     public User getUserById(UUID id) {
-        User[] users = getUsers();
+        List<User> users = getUsers();
         for (User user : users) {
             if (user.getId().equals(id)) {
                 return user;
