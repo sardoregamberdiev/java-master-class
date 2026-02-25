@@ -1,16 +1,16 @@
 package com.esardor;
 
 import com.esardor.booking.CarBooking;
-import com.esardor.booking.CarBookingListDao;
-import com.esardor.booking.CarBookingListDataAccessService;
+import com.esardor.booking.CarBookingDao;
+import com.esardor.booking.CarBookingDataAccessService;
 import com.esardor.booking.CarBookingService;
 import com.esardor.car.Car;
-import com.esardor.car.CarListDao;
-import com.esardor.car.CarListDataAccessService;
+import com.esardor.car.CarDao;
+import com.esardor.car.CarDataAccessService;
 import com.esardor.car.CarService;
 import com.esardor.user.User;
-import com.esardor.user.UserListDao;
-import com.esardor.user.UserListDataAccessService;
+import com.esardor.user.UserDao;
+import com.esardor.user.UserDataAccessService;
 import com.esardor.user.UserService;
 
 import java.util.List;
@@ -20,13 +20,13 @@ import java.util.UUID;
 public class Main {
     public static void main(String[] args) {
         // dependencies
-        UserListDao userListDao = new UserListDataAccessService();
-        CarBookingListDao carBookingArrayDao = new CarBookingListDataAccessService();
-        CarListDao carListDao = new CarListDataAccessService();
-        CarService carService = new CarService(carListDao);
+        UserDao userDao = new UserDataAccessService();
+        CarBookingDao carBookingArrayDao = new CarBookingDataAccessService();
+        CarDao carDao = new CarDataAccessService();
+        CarService carService = new CarService(carDao);
 
         //inject
-        UserService userService = new UserService(userListDao);
+        UserService userService = new UserService(userDao);
         CarBookingService carBookingService = new CarBookingService(carBookingArrayDao, carService);
 
         boolean isNotFinished = true;

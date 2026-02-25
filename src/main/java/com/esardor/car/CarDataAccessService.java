@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CarListDataAccessService implements CarListDao {
+public class CarDataAccessService implements CarDao {
     private static final List<Car> cars;
 
     static {

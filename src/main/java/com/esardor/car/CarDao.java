@@ -2,6 +2,6 @@ package com.esardor.car;
 
 import java.util.List;
 
-public interface CarListDao {
+public interface CarDao {
     List<Car> getCars();
 }

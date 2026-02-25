@@ -1,26 +1,21 @@
 package com.esardor.booking;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class CarBookingFileArrayDataAccessService implements CarBookingArrayDao {
+public class CarBookingFileDataAccessService implements CarBookingDao {
     private static final String FILE_URL = "src/main/java/com/esardor/bookings.ser";
-    private static CarBooking[] carBookings;
-
-    static {
-        carBookings = new CarBooking[10];
-    }
 
     // Read all bookings from file
     @Override
-    public CarBooking[] getCarBookings() {
+    public List<CarBooking> getCarBookings() {
+        List<CarBooking> carBookings = new ArrayList<>();
+
         File file = new File(FILE_URL);
-
         if (!file.exists()) {
-            return new CarBooking[0];
+            return new ArrayList<>();
         }
-
-        // initialize size
-        int nextIndex = 0;
 
         try (FileInputStream fileInputStream = new FileInputStream(file);
              ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
@@ -28,36 +23,17 @@ public class CarBookingFileArrayDataAccessService implements CarBookingArrayDao 
             while (true) {
                 try {
                     CarBooking carBooking = (CarBooking) objectInputStream.readObject();
-
-                    // Check if array is full
-                    if (nextIndex >= carBookings.length) {
-                        // Expand array by 10
-                        CarBooking[] newCarBookings = new CarBooking[carBookings.length + 10];
-                        for (int i = 0; i < carBookings.length; i++) {
-                            newCarBookings[i] = carBookings[i];
-                        }
-                        carBookings = newCarBookings;
-                    }
-
-                    // Add booking to array
-                    carBookings[nextIndex++] = carBooking;
-
+                    carBookings.add(carBooking);
                 } catch (EOFException e) {
                     // End of file reached - break the loop
                     break;
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
-            return new CarBooking[0];
+            return new ArrayList<>();
         }
 
-        // Trim array to actual size (remove null elements)
-        CarBooking[] result = new CarBooking[nextIndex];
-        for (int i = 0; i < nextIndex; i++) {
-            result[i] = carBookings[i];
-        }
-
-        return result;
+        return carBookings;
     }
 
     @Override
@@ -86,6 +62,7 @@ public class CarBookingFileArrayDataAccessService implements CarBookingArrayDao 
         }
     }
 
+    // Custom class to handle appending without writing header again
     private static class AppendableObjectOutputStream extends ObjectOutputStream {
         public AppendableObjectOutputStream(OutputStream out) throws IOException {
             super(out);

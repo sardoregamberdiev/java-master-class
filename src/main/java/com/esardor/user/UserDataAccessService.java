@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class UserListDataAccessService implements UserListDao {
+public class UserDataAccessService implements UserDao {
     private static final List<User> users;
 
     static {

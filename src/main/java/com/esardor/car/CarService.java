@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CarService {
-    private final CarListDao carListDao;
+    private final CarDao carDao;
 
-    public CarService(CarListDao carListDao) {
-        this.carListDao = carListDao;
+    public CarService(CarDao carDao) {
+        this.carDao = carDao;
     }
 
     public List<Car> getCars() {
-        return carListDao.getCars();
+        return carDao.getCars();
     }
 
     public List<Car> getElectricCar() {
         List<Car> electricCars = new ArrayList<>();
-        for (Car car : carListDao.getCars()) {
+        for (Car car : carDao.getCars()) {
             if (car.isElectric()) {
                 electricCars.add(car);
             }

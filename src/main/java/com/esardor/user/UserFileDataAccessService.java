@@ -1,34 +1,30 @@
 package com.esardor.user;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class UserFileListDataAccessService implements UserListDao {
-    private static final String URL = "src/main/java/com/esardor/users.csv";
-    private static final String CONTENT = """
-            id					                    name
-            550e8400-e29b-41d4-a716-446655440000,	James
-            f47ac10b-58cc-4372-a567-0e02b2c3d479,	Andry
-            6ba7b810-9dad-11d1-80b4-00c04fd430c8,	Nandy
-            """;
+public class UserFileDataAccessService implements UserDao {
+    private static final String FILE_URL = "src/main/java/com/esardor/users.csv";
 
     @Override
     public List<User> getUsers() {
         List<User> users = new ArrayList<>();
+
+        File file = new File(FILE_URL);
+        if (!file.exists()) {
+            return users;
+        }
+
         try (
-                FileWriter fileWriter = new FileWriter(URL);
-                FileReader fileReader = new FileReader(URL);
+                FileReader fileReader = new FileReader(file);
                 BufferedReader bufferedReader = new BufferedReader(fileReader);
         ) {
-            fileWriter.write(CONTENT);
-            fileWriter.flush();
-
-            bufferedReader.readLine();
+            String header = bufferedReader.readLine();
 
             String line;
             while ((line = bufferedReader.readLine()) != null) {
@@ -56,7 +52,6 @@ public class UserFileListDataAccessService implements UserListDao {
         String[] parts = line.split(",");
         UUID id = UUID.fromString(parts[0].trim());
         String name = parts[1].trim();
-
         return new User(id, name);
     }
 }

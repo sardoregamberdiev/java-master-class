@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CarFileListDataAccessService implements CarListDao {
+public class CarFileDataAccessService implements CarDao {
     private static final String FILE_URL = "src/main/java/com/esardor/cars.csv";
     private static List<Car> cars = new ArrayList<>();
 

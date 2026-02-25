@@ -4,17 +4,17 @@ import java.util.List;
 import java.util.UUID;
 
 public class UserService {
-    private final UserListDao userListDao;
+    private final UserDao userDao;
 
-    public UserService(UserListDao userListDao) {
-        this.userListDao = userListDao;
+    public UserService(UserDao userDao) {
+        this.userDao = userDao;
     }
 
     public List<User> getUsers() {
-        return userListDao.getUsers();
+        return userDao.getUsers();
     }
 
     public User getUserById(UUID id) {
-        return userListDao.getUserById(id);
+        return userDao.getUserById(id);
     }
 }

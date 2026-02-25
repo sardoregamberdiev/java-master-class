@@ -3,7 +3,7 @@ package com.esardor.booking;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CarBookingListDataAccessService implements CarBookingListDao {
+public class CarBookingDataAccessService implements CarBookingDao {
     private static List<CarBooking> carBookings = new ArrayList<>();
 
     @Override
