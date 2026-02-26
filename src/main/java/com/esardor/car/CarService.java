@@ -1,7 +1,8 @@
 package com.esardor.car;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class CarService {
     private final CarDao carDao;
@@ -15,21 +16,15 @@ public class CarService {
     }
 
     public List<Car> getElectricCar() {
-        List<Car> electricCars = new ArrayList<>();
-        for (Car car : carDao.getCars()) {
-            if (car.isElectric()) {
-                electricCars.add(car);
-            }
-        }
-        return electricCars;
+        return carDao.getCars().stream()
+                .filter(Car::isElectric)
+                .toList();
     }
 
     public Car getCarByRegNumber(String regNumber) {
-        for (Car car : getCars()) {
-            if (car.getRegNumber().equals(regNumber)) {
-                return car;
-            }
-        }
-        throw new IllegalStateException(String.format("Car with reg %s not found", regNumber));
+        return getCars().stream()
+                .filter(car -> Objects.equals(car.getRegNumber(), regNumber))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException(String.format("Car with reg %s not found", regNumber)));
     }
 }

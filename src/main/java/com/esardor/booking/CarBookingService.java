@@ -7,6 +7,7 @@ import com.esardor.user.User;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class CarBookingService {
@@ -45,15 +46,9 @@ public class CarBookingService {
     }
 
     public List<CarBooking> getCarBookingsByUser(UUID userId) {
-        List<CarBooking> carBookings = carBookingDao.getCarBookings();
-
-        List<CarBooking> userCarBookings = new ArrayList<>();
-        for (CarBooking carBooking : carBookings) {
-            if (carBooking.getUser().getId().equals(userId)) {
-                userCarBookings.add(carBooking);
-            }
-        }
-        return userCarBookings;
+        return carBookingDao.getCarBookings().stream()
+                .filter(carBooking -> Objects.equals(carBooking.getUser().getId(), userId))
+                .toList();
     }
 
     public List<Car> getAvailableCars() {

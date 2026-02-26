@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class UserFileDataAccessService implements UserDao {
@@ -34,18 +35,16 @@ public class UserFileDataAccessService implements UserDao {
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
+
         return users;
     }
 
     @Override
     public User getUserById(UUID id) {
-        List<User> users = getUsers();
-        for (User user : users) {
-            if (user.getId().equals(id)) {
-                return user;
-            }
-        }
-        return null;
+        return getUsers().stream()
+                .filter(user -> Objects.equals(user.getId(), id))
+                .findFirst()
+                .orElse(null);
     }
 
     private User parseLine(String line) {

@@ -10,13 +10,14 @@ import java.util.List;
 
 public class CarFileDataAccessService implements CarDao {
     private static final String FILE_URL = "src/main/java/com/esardor/cars.csv";
-    private static List<Car> cars = new ArrayList<>();
 
     @Override
     public List<Car> getCars() {
+        List<Car> cars = new ArrayList<>();
+
         File file = new File(FILE_URL);
         if (!file.exists()) {
-            return new ArrayList<>();
+            return cars;
         }
 
         try (
@@ -26,16 +27,22 @@ public class CarFileDataAccessService implements CarDao {
             bufferedReader.readLine();
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                String[] parts = line.split(",");
-                String regNumber = parts[0].trim();
-                BigDecimal rentalPricePerDay = BigDecimal.valueOf(Double.parseDouble(parts[1].trim()));
-                Brand brand = Brand.valueOf(parts[2].trim().toUpperCase());
-                boolean isElectric = parts[3].trim().equalsIgnoreCase("true");
-                cars.add(new Car(regNumber, rentalPricePerDay, brand, isElectric));
+                Car car = parseLine(line);
+                cars.add(car);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
         return cars;
+    }
+
+    private Car parseLine(String line) {
+        String[] parts = line.split(",");
+        String regNumber = parts[0].trim();
+        BigDecimal rentalPricePerDay = BigDecimal.valueOf(Double.parseDouble(parts[1].trim()));
+        Brand brand = Brand.valueOf(parts[2].trim().toUpperCase());
+        boolean isElectric = parts[3].trim().equalsIgnoreCase("true");
+        return new Car(regNumber, rentalPricePerDay, brand, isElectric);
     }
 }
