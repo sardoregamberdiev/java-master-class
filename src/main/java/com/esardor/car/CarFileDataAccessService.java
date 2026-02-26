@@ -7,21 +7,22 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CarFileDataAccessService implements CarDao {
-    private static final String FILE_URL = "src/main/java/com/esardor/cars.csv";
 
     @Override
     public List<Car> getCars() {
         List<Car> cars = new ArrayList<>();
 
-        File file = new File(FILE_URL);
+        String path = Objects.requireNonNull(getClass().getClassLoader().getResource("users.csv")).getPath();
+        File file = new File(path);
         if (!file.exists()) {
             return cars;
         }
 
         try (
-                FileReader fileReader = new FileReader(FILE_URL);
+                FileReader fileReader = new FileReader(path);
                 BufferedReader bufferedReader = new BufferedReader(fileReader);
         ) {
             bufferedReader.readLine();

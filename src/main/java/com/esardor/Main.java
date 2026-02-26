@@ -8,10 +8,7 @@ import com.esardor.car.Car;
 import com.esardor.car.CarDao;
 import com.esardor.car.CarDataAccessService;
 import com.esardor.car.CarService;
-import com.esardor.user.User;
-import com.esardor.user.UserDao;
-import com.esardor.user.UserDataAccessService;
-import com.esardor.user.UserService;
+import com.esardor.user.*;
 
 import java.util.List;
 import java.util.Scanner;
@@ -20,7 +17,7 @@ import java.util.UUID;
 public class Main {
     public static void main(String[] args) {
         // dependencies
-        UserDao userDao = new UserDataAccessService();
+        UserDao userDao = new UserFakerDataAccessService();
         CarBookingDao carBookingArrayDao = new CarBookingDataAccessService();
         CarDao carDao = new CarDataAccessService();
         CarService carService = new CarService(carDao);

@@ -10,13 +10,12 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class UserFileDataAccessService implements UserDao {
-    private static final String FILE_URL = "src/main/java/com/esardor/users.csv";
 
     @Override
     public List<User> getUsers() {
         List<User> users = new ArrayList<>();
 
-        File file = new File(FILE_URL);
+        File file = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("users.csv")).getPath());
         if (!file.exists()) {
             return users;
         }
