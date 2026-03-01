@@ -1,60 +1,55 @@
 package com.esardor.user;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class UserFileDataAccessService implements UserDao {
-    private static final String URL = "src/main/java/com/esardor/users.csv";
-    private static final String CONTENT = """
-            id					                    name
-            550e8400-e29b-41d4-a716-446655440000,	James
-            f47ac10b-58cc-4372-a567-0e02b2c3d479,	Andry
-            6ba7b810-9dad-11d1-80b4-00c04fd430c8,	Nandy
-            """;
 
     @Override
-    public User[] getUsers() {
-        User[] users = new User[3];
+    public List<User> getUsers() {
+        List<User> users = new ArrayList<>();
+
+        File file = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("users.csv")).getPath());
+        if (!file.exists()) {
+            return users;
+        }
+
         try (
-                FileWriter fileWriter = new FileWriter(URL);
-                FileReader fileReader = new FileReader(URL);
+                FileReader fileReader = new FileReader(file);
                 BufferedReader bufferedReader = new BufferedReader(fileReader);
         ) {
-            fileWriter.write(CONTENT);
-            fileWriter.flush();
-
             String header = bufferedReader.readLine();
+
             String line;
-            int index = 0;
             while ((line = bufferedReader.readLine()) != null) {
                 User user = parseLine(line);
-                users[index++] = user;
+                users.add(user);
             }
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
+
         return users;
     }
 
     @Override
     public User getUserById(UUID id) {
-        User[] users = getUsers();
-        for (User user : users) {
-            if (user.getId().equals(id)) {
-                return user;
-            }
-        }
-        return null;
+        return getUsers().stream()
+                .filter(user -> Objects.equals(user.getId(), id))
+                .findFirst()
+                .orElse(null);
     }
 
     private User parseLine(String line) {
         String[] parts = line.split(",");
         UUID id = UUID.fromString(parts[0].trim());
         String name = parts[1].trim();
-
         return new User(id, name);
     }
 }

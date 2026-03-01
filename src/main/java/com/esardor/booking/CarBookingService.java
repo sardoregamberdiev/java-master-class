@@ -5,6 +5,9 @@ import com.esardor.car.CarService;
 import com.esardor.user.User;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class CarBookingService {
@@ -20,9 +23,9 @@ public class CarBookingService {
     }
 
     public UUID bookingCar(User user, String regNumber) {
-        Car[] availableCars = getAvailableCars();
+        List<Car> availableCars = getAvailableCars();
 
-        if (availableCars.length == 0) {
+        if (availableCars.isEmpty()) {
             throw new IllegalStateException("❌ No cars available for renting 😕");
         }
 
@@ -38,84 +41,35 @@ public class CarBookingService {
 
     }
 
-    public CarBooking[] getCarBookings() {
-        int count = 0;
-        CarBooking[] carBookings = carBookingDao.getCarBookings();
-        for (CarBooking carBooking : carBookings) {
-            if (carBooking != null) {
-                count++;
-            }
-        }
-        if (count == 0) {
-            return new CarBooking[0];
-        }
-        CarBooking[] newCarBookings = new CarBooking[count];
-        int nextItem = 0;
-        for (CarBooking carBooking : carBookings) {
-            if (carBooking != null) {
-                newCarBookings[nextItem++] = carBooking;
-            }
-        }
-        return newCarBookings;
+    public List<CarBooking> getCarBookings() {
+        return carBookingDao.getCarBookings();
     }
 
-    public CarBooking[] getCarBookingsByUser(UUID userId) {
-        CarBooking[] carBookings = carBookingDao.getCarBookings();
-        int count = 0;
-        for (CarBooking carBooking : carBookings) {
-            if (carBooking != null && carBooking.getUser().getId().equals(userId)) {
-                count++;
-            }
-        }
-
-        if (count == 0) {
-            return new CarBooking[0];
-        }
-
-        CarBooking[] userCarBookings = new CarBooking[count];
-        int nextItem = 0;
-        for (CarBooking carBooking : carBookings) {
-            if (carBooking != null && carBooking.getUser().getId().equals(userId)) {
-                userCarBookings[nextItem++] = carBooking;
-            }
-        }
-        return userCarBookings;
+    public List<CarBooking> getCarBookingsByUser(UUID userId) {
+        return carBookingDao.getCarBookings().stream()
+                .filter(carBooking -> Objects.equals(carBooking.getUser().getId(), userId))
+                .toList();
     }
 
-    public Car[] getAvailableCars() {
+    public List<Car> getAvailableCars() {
         return getCars(carService.getCars());
     }
 
-    public Car[] getAvailableElectricCars() {
+    public List<Car> getAvailableElectricCars() {
         return getCars(carService.getElectricCar());
     }
 
-    private Car[] getCars(Car[] cars) {
-        if (cars.length == 0) {
-            return new Car[0];
+    private List<Car> getCars(List<Car> cars) {
+        if (cars.isEmpty()) {
+            return new ArrayList<>();
         }
 
-        CarBooking[] bookedCars = carBookingDao.getCarBookings();
-        if (bookedCars.length == 0) {
+        List<CarBooking> bookedCars = carBookingDao.getCarBookings();
+        if (bookedCars.isEmpty()) {
             return cars;
         }
 
-        int availableCarsCount = 0;
-        for (Car car : cars) {
-            boolean isFound = false;
-            for (CarBooking bookedCar : bookedCars) {
-                if (bookedCar == null || !bookedCar.getCar().equals(car)) {
-                    continue;
-                }
-                isFound = true;
-            }
-            if (!isFound) {
-                ++availableCarsCount;
-            }
-        }
-
-        Car[] availableCars = new Car[availableCarsCount];
-        var nextItem = 0;
+        List<Car> availableCars = new ArrayList<>();
 
         for (Car car : cars) {
             var founded = false;
@@ -127,7 +81,7 @@ public class CarBookingService {
             }
 
             if (!founded) {
-                availableCars[nextItem++] = car;
+                availableCars.add(car);
             }
         }
 
