@@ -172,7 +172,7 @@ public class Main {
                 return;
             }
 
-            UUID bookingId = carBookingService.bookingCar(user, regNumber);
+            UUID bookingId = carBookingService.saveBooking(user, regNumber);
 
             String formattedMessage = """
                     🎉 Successfully booked car with reg number %s for user %s

@@ -1,7 +1,6 @@
 package com.esardor.car;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class CarService {
@@ -25,6 +24,6 @@ public class CarService {
         return getCars().stream()
                 .filter(car -> Objects.equals(car.getRegNumber(), regNumber))
                 .findFirst()
-                .orElseThrow(() -> new NoSuchElementException(String.format("Car with reg %s not found", regNumber)));
+                .orElse(null);
     }
 }

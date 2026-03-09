@@ -22,7 +22,7 @@ public class CarBookingService {
         this.carService = carService;
     }
 
-    public UUID bookingCar(User user, String regNumber) {
+    public UUID saveBooking(User user, String regNumber) {
         List<Car> availableCars = getAvailableCars();
 
         if (availableCars.isEmpty()) {

@@ -12,9 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -42,7 +41,7 @@ class UserServiceTest {
         james = new User(UUID.fromString("550e8400-e29b-41d4-a716-446655440000"), "James");
         andre = new User(UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479"), "Andre");
         nancy = new User(UUID.fromString("6ba7b810-9dad-11d1-80b4-00c04fd430c8"), "Nancy");
-        users = List.of(james, andre, nancy);
+        users = Stream.of(james, andre, nancy).toList();
     }
 
 //  ----- getUsers() Tests -------------------------------------------------------------------------
@@ -61,15 +60,11 @@ class UserServiceTest {
             List<User> result = userService.getUsers();
 
             // then
-            // ASSERT: check the result
             assertNotNull(result);
             assertEquals(3, result.size());
             assertEquals(users, result);
 
-            // Hamcrest: more expressive assertions
-            assertThat(result, hasSize(3));
-            assertThat(result, containsInAnyOrder(james, andre, nancy));
-            assertThat(result, hasItem(james));
+            verify(userDao).getUsers();
         }
 
         @Test
@@ -83,9 +78,8 @@ class UserServiceTest {
 
             // then
             assertNotNull(result);
+            assertEquals(0, result.size());
             assertTrue(result.isEmpty());
-            assertThat(result, empty());           // Hamcrest: empty()
-            assertThat(result, hasSize(0));
         }
     }
 
@@ -113,21 +107,14 @@ class UserServiceTest {
         @DisplayName("Can return null when no user exists")
         void canReturnNullWhenNoUserExists() {
             // given
-            UUID jamesId = james.getId();
-            when(userDao.getUserById(jamesId)).thenReturn(james);
+            UUID unknownId = UUID.randomUUID();
+            when(userDao.getUserById(unknownId)).thenReturn(null);
 
             // when
-            User result = userDao.getUserById(jamesId);
+            User result = userService.getUserById(unknownId);
 
             // then
-            assertNotNull(result);
-            assertEquals(james, result);
-            assertEquals("James", result.getName());
-            assertEquals(jamesId, result.getId());
-
-            // Hamcrest alternative
-            assertThat(result, is(notNullValue()));
-            assertThat(result.getName(), is("James"));
+            assertNull(result);
         }
     }
 }
